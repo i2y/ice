@@ -1,12 +1,12 @@
-"""Generate Python source files from Mochi files and check for valid syntax.
+"""Generate Python source files from Ice files and check for valid syntax.
 """
 
 import glob
 import os
 import py_compile
 
-from mochi.core.main import make_py_source_file, MONKEY_PATCH_ENV
-from mochi.utils.path_helper import TempDir
+from ice.core.main import make_py_source_file, MONKEY_PATCH_ENV
+from ice.utils.path_helper import TempDir
 
 
 def make_target_file_name(file_name, dst_path, ext):
@@ -23,14 +23,14 @@ def check_py_syntax(src_path, dst_path):
         os.makedirs(dst_path)
     good = []
     bad = []
-    for file_name in glob.glob(os.path.join(src_path, '*.mochi')):
+    for file_name in glob.glob(os.path.join(src_path, '*.ice')):
         mod_name = os.path.splitext(os.path.basename(file_name))[0]
         py_file_name = make_target_file_name(file_name, dst_path, 'py')
         with TempDir(src_path):
             try:
-                make_py_source_file(mochi_file_name=file_name,
+                make_py_source_file(ice_file_name=file_name,
                                     python_file_name=py_file_name,
-                                    mochi_env=MONKEY_PATCH_ENV,
+                                    ice_env=MONKEY_PATCH_ENV,
                                     add_init=True, show_tokens=False)
             except TypeError as err:
                 print('#' * 30)
@@ -57,7 +57,7 @@ def check_py_syntax(src_path, dst_path):
 if __name__ == '__main__':
 
     def check_examples():
-        """Check Mochi files in example dir."""
+        """Check Ice files in example dir."""
         cwd = os.getcwd()
         src_path = os.path.normpath(os.path.join(cwd, '../examples'))
         dst_path = os.path.normpath(os.path.join(cwd, '../tmp'))

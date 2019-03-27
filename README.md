@@ -1,8 +1,8 @@
-Mochi
+Ice
 ====
-Mochi is a dynamically typed programming language for functional programming and actor-style programming.
+Ice is a dynamically typed programming language for functional programming and actor-style programming.
 
-Its interpreter is written in Python3. The interpreter translates a program written in Mochi to Python3's AST / bytecode.
+Its interpreter is written in Python3. The interpreter translates a program written in Ice to Python3's AST / bytecode.
 
 ## Features
 - Python-like syntax
@@ -112,8 +112,8 @@ sleep(1)
 
 ### Distributed Computing
 ```python
-# comsumer.mochi
-from mochi.actor.mailbox import KombuMailbox, ZmqInbox, SQSMailbox
+# comsumer.ice
+from ice.actor.mailbox import KombuMailbox, ZmqInbox, SQSMailbox
 
 def consumer():
     receive:
@@ -139,8 +139,8 @@ wait_all()
 
 
 ```python
-# producer.mochi
-from mochi.actor.mailbox import KombuMailbox, ZmqOutbox, SQSMailbox
+# producer.ice
+from ice.actor.mailbox import KombuMailbox, ZmqOutbox, SQSMailbox
 
 kombu_mailbox = KombuMailbox('sqs://<access_key_id>@<secret_access_key>:80//',
                              '<queue_name>',
@@ -173,7 +173,7 @@ app.run()
 
 ### RxPY
 ```python
-# usage: mochi -no-mp timer.mochi
+# usage: ice -no-mp timer.ice
 # original:
 # https://github.com/ReactiveX/RxPY/blob/master/examples/parallel/timer.py
 
@@ -226,7 +226,7 @@ See requirements.txt
 
 ## Installation
 ```sh
-$ pip3 install mochi
+$ pip3 install ice
 ```
 ### Optional Installation
 ```sh
@@ -236,7 +236,7 @@ $ pip3 install boto # to use SQS as transport of KombuMailbox
 $ pip3 install boto3 # to use SQSMailbox
 ```
 
-Th error of the following may occur when you run Mochi on PyPy.
+Th error of the following may occur when you run Ice on PyPy.
 ```
 ImportError: Importing zmq.backend.cffi failed with version mismatch, 0.8.2 != 0.9.2
 ```
@@ -251,45 +251,45 @@ $ pip3 install cffi==0.8.2
 
 ### REPL
 ```sh
-$ mochi
+$ ice
 >>>
 ```
 
 ### loading and running a file
 ```sh
-$ cat kinako.mochi
+$ cat kinako.ice
 print('kinako')
-$ mochi kinako.mochi
+$ ice kinako.ice
 kinako
-$ mochi -no-mp kinako.mochi  # not apply eventlet's monkey patching
+$ ice -no-mp kinako.ice  # not apply eventlet's monkey patching
 kinako
 ```
 
 ### byte compilation
 ```sh
-$ mochi -c kinako.mochi > kinako.mochic
+$ ice -c kinako.ice > kinako.icec
 ```
 
 ### running a byte-compiled file
 ```sh
-$ mochi -e kinako.mochic
+$ ice -e kinako.icec
 kinako
-$ mochi -e -no-mp kinako.mochic  # not apply eventlet's monkey patching
+$ ice -e -no-mp kinako.icec  # not apply eventlet's monkey patching
 kinako
 ```
 
 ### generating .pyc
 ```sh
 $ ls
-kagami.mochi
-$ cat kagami.mochi
+kagami.ice
+$ cat kagami.ice
 print('kagami')
-$ mochi
+$ ice
 >>> import kagami
 kagami
 >>> exit()
 $ ls
-kagami.mochi kagami.pyc
+kagami.ice kagami.pyc
 $ python3 kagami.pyc
 kagami
 ```
@@ -297,10 +297,10 @@ kagami
 Or
 
 ```sh
-$ mochi -pyc kagami.mochi > kagami.pyc
+$ ice -pyc kagami.ice > kagami.pyc
 $ python3 kagami.pyc
 kagami
-$ mochi -pyc -no-mp kagami.mochi > kagami.pyc  # not apply eventlet's monkey patching
+$ ice -pyc -no-mp kagami.ice > kagami.pyc  # not apply eventlet's monkey patching
 $ python3 kagami.pyc
 kagami
 ```
@@ -454,24 +454,24 @@ match foo:
 
 ### Records
 ```python
-record Mochi
-record AnkoMochi(anko) < Mochi
-record KinakoMochi(kinako) < Mochi
+record Ice
+record AnkoIce(anko) < Ice
+record KinakoIce(kinako) < Ice
 
-anko_mochi = AnkoMochi(anko=3)
+anko_ice = AnkoIce(anko=3)
 
-isinstance(anko_mochi, Mochi)
+isinstance(anko_ice, Ice)
 # => True
-isinstance(anko_mochi, AnkoMochi)
+isinstance(anko_ice, AnkoIce)
 # => True
-isinstance(anko_mochi, KinakoMochi)
+isinstance(anko_ice, KinakoIce)
 # => False
 
-match anko_mochi:
-    KinakoMochi(kinako): 'kinako ' * kinako + ' mochi'
-    AnkoMochi(anko): 'anko ' * anko + 'mochi'
-    Mochi(_): 'mochi'
-# => 'anko anko anko mochi'
+match anko_ice:
+    KinakoIce(kinako): 'kinako ' * kinako + ' ice'
+    AnkoIce(anko): 'anko ' * anko + 'ice'
+    Ice(_): 'ice'
+# => 'anko anko anko ice'
 
 
 record Person(name, age):
@@ -718,19 +718,19 @@ pipeline([1, 2, 3],
 
 ### Including a file at compile time
 ```sh
-$ cat anko.mochi
+$ cat anko.ice
 x = 10000
 y = 20000
 ```
 
 ```python
-require 'anko.mochi'
+require 'anko.ice'
 x
 # => 10000
 
 x = 30000
 
-require 'anko.mochi' # include once at compile time
+require 'anko.ice' # include once at compile time
 x
 # => 30000
 ```
@@ -751,13 +751,13 @@ Math.add(1, 2)
 ```
 
 ```sh
-$ cat foobar.mochi
+$ cat foobar.ice
 foo = 'foo'
 bar = 'bar'
 ```
 
 ```python
-require 'foobar.mochi'
+require 'foobar.ice'
 [foo, bar]
 # => pvector(['foo', 'bar'])
 
@@ -765,7 +765,7 @@ foo = 'foofoofoo'
 
 module X:
     export foobar
-    require 'foobar.mochi'
+    require 'foobar.ice'
     def foobar:
         [foo, bar]
 
@@ -785,4 +785,4 @@ X.foobar()
 MIT License
 
 ## Contributors
-https://github.com/i2y/mochi/graphs/contributors
+https://github.com/i2y/ice/graphs/contributors

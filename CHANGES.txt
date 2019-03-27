@@ -59,7 +59,7 @@ v0.2.1, 2015-04-09
   * Add ActorAddressBook
     [example:server]
     >>> hub = ActorHub() # equals to ActorHub('tcp://*:9999')
-    >>> hub.register('test', spawn(() -> print('test!')))
+    >>> hub.register('test', spawn(() => print('test!')))
     >>> hub.run()
     >>> address_book = ActorAddressBook('127.0.0.1:2181') # specify ZooKeeper's address
     >>> address_book.register('print_test', 'tcp://127.0.0.1:9999/test')

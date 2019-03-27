@@ -1,6 +1,6 @@
 # file test_add.py in dir tests
 
-from mochi.utils.pycloader import get_module
+from ice.utils.pycloader import get_module
 
 
 mod_add = get_module('add', file_path=__file__)

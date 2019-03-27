@@ -5,10 +5,12 @@ from invoke import run, task
 
 
 @task
-def test():
+def test(ctx):
     """Run standard tests.
 
 
     Usage (commandline): inv test
     """
-    run('py.test --assert=reinterp', pty=True)
+    # run('py.test --assert=reinterp', pty=True)
+    run('py.test', pty=True)
+    # run('py.test --assert=plain', pty=True)

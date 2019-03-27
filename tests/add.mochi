@@ -1,7 +1,0 @@
-# file add.mochi in dir tests
-
-def add(a, b):
-    return a + b
-
-def add10(a):
-    return a + 10

@@ -3,24 +3,24 @@ from functools import partial
 
 import pytest
 
-from mochi.utils.pycloader import get_function, get_module
+from ice.utils.pycloader import get_function, get_module
 
 from conftest import auto_test
 
 get_module = partial(get_module, file_path=__file__)
 get_function = partial(get_function, file_path=__file__)
 
-factorial = get_function('factorial')
+# factorial = get_function('factorial')
 fizzbuzz = get_function('fizzbuzz')
 patterns = get_module('patterns')
 
 
-def test_factorial_1():
-    assert factorial(1) == 1
+# def test_factorial_1():
+#     assert factorial(1) == 1
 
 
-def test_factorial_2():
-    assert factorial(2) == 2
+# def test_factorial_2():
+#     assert factorial(2) == 2
 
 
 def test_fizzbuzz():
@@ -32,5 +32,5 @@ def test_fizzbuzz():
 
 @pytest.mark.parametrize("func,result", auto_test(patterns))
 def test_patterns(func, result):
+    print(locals())
     assert func() == result()
-
